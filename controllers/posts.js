@@ -1,27 +1,13 @@
 const Data = require("../models/Post"); // Ensure this path is correct
-const multer = require("multer");
-const path = require("path");
 
-// Setup multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
-const upload = multer({ storage });
-
+// Handle file uploads and creation
 exports.createData = async (req, res) => {
   try {
     const { headingEng, headingGeo, textEng, textGeo } = req.body;
 
     // Handle files
-    const photo = req.file ? `/uploads/${req.file.filename}` : null;
-    const photoes = req.files
-      ? req.files.map((file) => `/uploads/${file.filename}`)
-      : [];
+    const photo = req.files['photo'] ? `/uploads/${req.files['photo'][0].filename}` : null;
+    const photoes = req.files['photoes'] ? req.files['photoes'].map((file) => `/uploads/${file.filename}`) : [];
 
     const newData = new Data({
       headingEng,
@@ -39,6 +25,7 @@ exports.createData = async (req, res) => {
   }
 };
 
+// Retrieve data
 exports.getData = async (req, res) => {
   try {
     const data = await Data.find();

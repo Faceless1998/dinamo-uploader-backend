@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const multer = require('multer');
 const path = require('path');
 const postRoutes = require('./routes/posts'); // Import your routes
 require('dotenv').config(); // Load environment variables from .env file
@@ -32,8 +31,8 @@ const upload = multer({ storage: storage });
 
 // Use middleware for handling file uploads
 app.use('/api/posts', upload.fields([
-  { name: 'mainimage', maxCount: 1 },
-  { name: 'imagegallery', maxCount: 10 }
+  { name: 'photo', maxCount: 1 },
+  { name: 'photoes', maxCount: 10 }
 ]), postRoutes);
 
 // MongoDB connection

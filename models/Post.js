@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema(
     headingGeo: { type: String, required: true },
     textEng: { type: String, required: true },
     textGeo: { type: String, required: true },
-    photo: { type: String, required: true },
+    photo: { type: String },
     photoes: [photoSchema],
   },
   { collection: "posts" }
