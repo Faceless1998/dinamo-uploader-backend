@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer'); // Import multer here
 const postRoutes = require('./routes/posts'); // Import your routes
 require('dotenv').config(); // Load environment variables from .env file
 
