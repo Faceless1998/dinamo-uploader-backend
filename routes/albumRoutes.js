@@ -1,5 +1,6 @@
+// routes/albumRoutes.js
 const express = require('express');
-const { createData, getData } = require('../controllers/dataController');
+const { createAlbum, getAlbums } = require('../controllers/albumController');
 const multer = require('multer');
 const router = express.Router();
 
@@ -15,11 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/', upload.fields([
-  { name: 'mainPhoto', maxCount: 1 },
-  { name: 'photos', maxCount: 10 } // Adjust maxCount as needed
-]), createData);
-
-router.get('/', getData);
+// Handle multiple file uploads for photos
+router.post('/', upload.array('photos', 10), createAlbum); // Adjust maxCount as needed
+router.get('/', getAlbums);
 
 module.exports = router;
