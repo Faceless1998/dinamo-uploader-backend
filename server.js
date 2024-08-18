@@ -19,14 +19,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 .then(() => {
   console.log('Connected to MongoDB');
 })
-.catch(err => console.log(err));
+.catch(err => console.log('MongoDB connection error:', err));
 
 // Use routes
 app.use('/api/data', dataRoutes);
+
+// Test route
+app.get('/test', (req, res) => {
+  res.send('Test route is working!');
+});
 
 // Start server
 app.listen(PORT, () => {
