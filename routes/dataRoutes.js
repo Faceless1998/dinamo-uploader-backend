@@ -1,21 +1,35 @@
-const express = require('express');
-const upload = require('../config/multer'); // Import the multer configuration
-const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
-// POST route for uploading files
-router.post('/upload', upload.single('file'), (req, res) => {
-  try {
-    // req.file contains the uploaded file information
-    console.log(req.file);
+// Configure multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Directory where files will be saved
+  },
+  filename: function (req, file, cb) {
+    // Use original filename or customize as needed
+    cb(null, Date.now() + path.extname(file.originalname)); // Ensure unique file names
+  },
+});
 
-    // Send a success response with the file details
-    res.status(200).json({
-      message: 'File uploaded successfully',
-      file: req.file
-    });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+// Configure multer upload
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // Limit file size to 5MB
+  },
+  fileFilter: (req, file, cb) => {
+    // Allow only specific file types
+    const allowedTypes = /jpeg|jpg|png/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'));
+    }
   }
 });
 
-module.exports = router;
+module.exports = upload;
