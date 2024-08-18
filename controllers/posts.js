@@ -1,36 +1,31 @@
-const Data = require('../models/dataModel');
+const Data = require("../models/Post"); // Ensure this path is correct
 
+// Handle file uploads and creation
 exports.createData = async (req, res) => {
   try {
-    console.log(req.body); // Log the request body
-    console.log(req.files); // Log the uploaded files
-
     const { headingEng, headingGeo, textEng, textGeo } = req.body;
-    if (!req.files['mainPhoto'] || req.files['mainPhoto'].length === 0) {
-      throw new Error('Main photo is required');
-    }
-    
-    const mainPhoto = `/uploads/${req.files['mainPhoto'][0].filename}`;
-    const photos = req.files['photos'] ? req.files['photos'].map(file => `/uploads/${file.filename}`) : [];
+
+    // Handle files
+    const photo = req.files['photo'] ? `/uploads/${req.files['photo'][0].filename}` : null;
+    const photoes = req.files['photoes'] ? req.files['photoes'].map((file) => `/uploads/${file.filename}`) : [];
 
     const newData = new Data({
       headingEng,
       headingGeo,
       textEng,
       textGeo,
-      mainPhoto,
-      photos
+      photo,
+      photoes,
     });
 
     await newData.save();
     res.status(201).json(newData);
   } catch (error) {
-    console.error(error); // Log the error
     res.status(400).json({ message: error.message });
   }
 };
 
-
+// Retrieve data
 exports.getData = async (req, res) => {
   try {
     const data = await Data.find();
