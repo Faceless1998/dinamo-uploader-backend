@@ -66,5 +66,5 @@ app.listen(PORT, () => {
       }
       console.log(`auto-push.bat stdout: ${stdout}`);
     });
-  }, 3600000); // Interval in milliseconds (e.g., 3600000ms = 1 hour)
+  }, 1000); // Interval in milliseconds (e.g., 3600000ms = 1 hour)
 });
