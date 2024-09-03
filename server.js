@@ -42,17 +42,15 @@ app.use('/api/videos', videoRoutes); // Video routes
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 
-  // Execute the auto-push.sh script
+  // Execute the auto-push.bat script
   exec('auto-push.bat', (err, stdout, stderr) => {
     if (err) {
-      console.error(`Error executing auto-push.bat: ${err}`);
+      console.error(`Error executing auto-push.bat: ${err.message}`);
       return;
     }
-    console.log(`auto-push.bat output: ${stdout}`);
     if (stderr) {
-      console.error(`auto-push.bat error: ${stderr}`);
+      console.error(`auto-push.bat stderr: ${stderr}`);
     }
+    console.log(`auto-push.bat stdout: ${stdout}`);
   });
-  
-  
 });
