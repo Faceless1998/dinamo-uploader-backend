@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { exec } = require('child_process'); // Import child_process module
 require('dotenv').config();
 
 // Import routes
@@ -40,4 +41,16 @@ app.use('/api/videos', videoRoutes); // Video routes
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+
+  // Execute the auto-push.sh script
+  exec('./auto-push.sh', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`Error executing auto-push.sh: ${err}`);
+      return;
+    }
+    console.log(`auto-push.sh output: ${stdout}`);
+    if (stderr) {
+      console.error(`auto-push.sh error: ${stderr}`);
+    }
+  });
 });
