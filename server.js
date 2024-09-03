@@ -43,14 +43,16 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 
   // Execute the auto-push.sh script
-  exec('./auto-push.sh', (err, stdout, stderr) => {
+  exec('auto-push.bat', (err, stdout, stderr) => {
     if (err) {
-      console.error(`Error executing auto-push.sh: ${err}`);
+      console.error(`Error executing auto-push.bat: ${err}`);
       return;
     }
-    console.log(`auto-push.sh output: ${stdout}`);
+    console.log(`auto-push.bat output: ${stdout}`);
     if (stderr) {
-      console.error(`auto-push.sh error: ${stderr}`);
+      console.error(`auto-push.bat error: ${stderr}`);
     }
   });
+  
+  
 });
