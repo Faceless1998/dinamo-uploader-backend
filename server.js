@@ -42,7 +42,7 @@ app.use('/api/videos', videoRoutes); // Video routes
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 
-  // Execute the auto-push.bat script
+  // Execute the auto-push.bat script on server start
   exec('auto-push.bat', (err, stdout, stderr) => {
     if (err) {
       console.error(`Error executing auto-push.bat: ${err.message}`);
@@ -53,4 +53,18 @@ app.listen(PORT, () => {
     }
     console.log(`auto-push.bat stdout: ${stdout}`);
   });
+
+  // Set up periodic execution (e.g., every hour)
+  setInterval(() => {
+    exec('auto-push.bat', (err, stdout, stderr) => {
+      if (err) {
+        console.error(`Error executing auto-push.bat: ${err.message}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`auto-push.bat stderr: ${stderr}`);
+      }
+      console.log(`auto-push.bat stdout: ${stdout}`);
+    });
+  }, 3600000); // Interval in milliseconds (e.g., 3600000ms = 1 hour)
 });
