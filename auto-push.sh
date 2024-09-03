@@ -1,12 +1,4 @@
-echo "Enter your message"
-read message
+#!/bin/bash
 git add .
-git commit -m"${message}"
-if [ -n "$(git status - porcelain)" ];
-then
- echo "IT IS CLEAN"
-else
- git status
- echo "Pushing data to remote server!!!"
- git push -u origin main
-fi
+git commit -m "Auto commit"
+git push origin main
